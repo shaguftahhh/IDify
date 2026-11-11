@@ -1,6 +1,9 @@
 <div align="center">
 
 # 🪪 IDify
+## 🌐 Live Demo
+
+Try IDify here: **https://i-dify-afxh.vercel.app/**
 
 **Your identity, instantly.**
 
