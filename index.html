@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDify — Student ID Card Generator | Your identity, instantly.</title>
+  <meta name="description" content="Generate, customize, flip, print, and download digital student ID cards instantly with live preview, QR codes, and multiple themes." />
+  <meta property="og:title" content="IDify — Student ID Card Generator" />
+  <meta property="og:description" content="Instantly create professional digital student ID cards with QR codes and 3D flip preview." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- External CDN Libraries for QR Code, Image & PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="4" />
+            <circle cx="8.5" cy="8.5" r="2.5" />
+            <path d="M14.5 7h4" />
+            <path d="M14.5 10h3" />
+            <path d="M4 19c0-2.5 3-4 5-4s5 1.5 5 4" />
+            <path d="M16 15h3" />
+            <path d="M16 18h2" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">ID<span>ify</span></h1>
+          <p class="brand-tagline">Your identity, instantly.</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Site Theme Switcher -->
+        <div class="site-theme-switcher" role="radiogroup" aria-label="Website Theme">
+          <button type="button" class="site-theme-btn active" data-site-theme="dark" title="Executive Dark Theme">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            Dark
+          </button>
+          <button type="button" class="site-theme-btn" data-site-theme="light" title="Clean Studio Light Theme">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            Light
+          </button>
+          <button type="button" class="site-theme-btn" data-site-theme="cyber" title="Cyber-ID Neo-Tech Theme">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Cyber
+          </button>
+        </div>
+
+        <!-- Sound Effects Toggle -->
+        <button id="btn-toggle-sound" type="button" class="btn btn-outline btn-sm sound-toggle-btn" title="Toggle tactile UI sound effects">
+          <svg id="icon-sound-on" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          <svg id="icon-sound-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          <span id="sound-status-text">Audio</span>
+        </button>
+
+        <button id="btn-quick-demo" type="button" class="btn btn-secondary btn-sm" title="Populate form with realistic student details">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.29 7 12 12 20.71 7"/>
+            <line x1="12" y1="22" x2="12" y2="12"/>
+          </svg>
+          Demo
+        </button>
+        <button id="btn-clear-storage" type="button" class="btn btn-outline btn-sm" title="Clear all saved information from local storage">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Grid -->
+  <main class="main-wrapper">
+    <div class="layout-grid">
+
+      <!-- LEFT COLUMN: Input Form -->
+      <section class="panel form-panel" aria-labelledby="form-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="form-heading" class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+              Student Details
+            </h2>
+            <p class="panel-subtitle">Enter student information. The card updates automatically as you type.</p>
+          </div>
+        </div>
+
+        <form id="id-card-form" novalidate>
+          <div class="form-grid">
+
+            <!-- Profile Photo Upload (Col-Full) -->
+            <div class="form-group col-full">
+              <label class="form-label" for="photo-file-input">
+                <span>Profile Photo <small class="text-muted">(Max 2 MB, Image only)</small></span>
+              </label>
+              <div class="photo-uploader" id="photo-dropzone">
+                <input type="file" id="photo-file-input" accept="image/*" aria-label="Upload student profile photo" />
+                <div class="uploader-content">
+                  <div class="photo-preview-thumb" id="photo-thumb-container">
+                    <svg id="photo-fallback-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <img id="photo-thumb-img" alt="Student preview" style="display: none;" />
+                  </div>
+                  <div class="uploader-text">
+                    <p class="uploader-title" id="photo-status-title">Click or drag & drop photo here</p>
+                    <p class="uploader-desc" id="photo-status-desc">PNG, JPG, JPEG, WEBP up to 2 MB</p>
+                    <div class="uploader-actions" id="uploader-actions" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                      <button type="button" id="btn-sample-photo" class="btn btn-outline btn-sm">Use Sample Photo</button>
+                      <button type="button" id="btn-remove-photo" class="btn btn-outline btn-sm" style="display: none;">Remove Photo</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="error-message" id="error-photo" aria-live="polite"></div>
+            </div>
+
+            <!-- Full Name (Required) -->
+            <div class="form-group col-full">
+              <label class="form-label" for="field-fullName">
+                <span>Full Name <span class="required" aria-hidden="true">*</span></span>
+              </label>
+              <input type="text" id="field-fullName" class="form-control" placeholder="e.g. Alexander Vance" required />
+              <div class="error-message" id="error-fullName" aria-live="polite"></div>
+            </div>
+
+            <!-- Student ID / Roll Number (Required) -->
+            <div class="form-group">
+              <label class="form-label" for="field-studentId">
+                <span>Student ID / Roll No. <span class="required" aria-hidden="true">*</span></span>
+              </label>
+              <input type="text" id="field-studentId" class="form-control" placeholder="e.g. CS-2026-894" required />
+              <div class="error-message" id="error-studentId" aria-live="polite"></div>
+            </div>
+
+            <!-- Institution Name -->
+            <div class="form-group">
+              <label class="form-label" for="field-institution">
+                <span>Institution / University</span>
+              </label>
+              <input type="text" id="field-institution" class="form-control" placeholder="e.g. Apex Metropolitan University" />
+              <div class="error-message" id="error-institution" aria-live="polite"></div>
+            </div>
+
+            <!-- Course / Program (Required) -->
+            <div class="form-group">
+              <label class="form-label" for="field-course">
+                <span>Course / Program <span class="required" aria-hidden="true">*</span></span>
+              </label>
+              <input type="text" id="field-course" class="form-control" placeholder="e.g. B.Tech Computer Science" required />
+              <div class="error-message" id="error-course" aria-live="polite"></div>
+            </div>
+
+            <!-- Department -->
+            <div class="form-group">
+              <label class="form-label" for="field-department">
+                <span>Department</span>
+              </label>
+              <input type="text" id="field-department" class="form-control" placeholder="e.g. School of Computing" />
+              <div class="error-message" id="error-department" aria-live="polite"></div>
+            </div>
+
+            <!-- Academic Year / Semester -->
+            <div class="form-group">
+              <label class="form-label" for="field-yearSemester">
+                <span>Year / Semester</span>
+              </label>
+              <input type="text" id="field-yearSemester" class="form-control" placeholder="e.g. Year 3 / Sem 6" />
+              <div class="error-message" id="error-yearSemester" aria-live="polite"></div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+              <label class="form-label" for="field-dob">
+                <span>Date of Birth</span>
+              </label>
+              <input type="date" id="field-dob" class="form-control" />
+              <div class="error-message" id="error-dob" aria-live="polite"></div>
+            </div>
+
+            <!-- Blood Group Dropdown -->
+            <div class="form-group">
+              <label class="form-label" for="field-bloodGroup">
+                <span>Blood Group</span>
+              </label>
+              <select id="field-bloodGroup" class="form-control">
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+              <div class="error-message" id="error-bloodGroup" aria-live="polite"></div>
+            </div>
+
+            <!-- Phone Number (10-Digit Validation) -->
+            <div class="form-group">
+              <label class="form-label" for="field-phone">
+                <span>Phone Number <small class="text-muted">(10 Digits)</small></span>
+              </label>
+              <input type="tel" id="field-phone" class="form-control" placeholder="e.g. 9876543210" maxlength="15" />
+              <div class="error-message" id="error-phone" aria-live="polite"></div>
+            </div>
+
+            <!-- Email (Format Validation) -->
+            <div class="form-group">
+              <label class="form-label" for="field-email">
+                <span>Email Address</span>
+              </label>
+              <input type="email" id="field-email" class="form-control" placeholder="student@university.edu" />
+              <div class="error-message" id="error-email" aria-live="polite"></div>
+            </div>
+
+            <!-- Valid Until Date -->
+            <div class="form-group">
+              <label class="form-label" for="field-validUntil">
+                <span>Valid Until / Expiry</span>
+              </label>
+              <input type="date" id="field-validUntil" class="form-control" />
+              <div class="error-message" id="error-validUntil" aria-live="polite"></div>
+            </div>
+
+            <!-- Address (Textarea, Col-Full) -->
+            <div class="form-group col-full">
+              <label class="form-label" for="field-address">
+                <span>Residential Address</span>
+              </label>
+              <textarea id="field-address" class="form-control" placeholder="Room 402, North Hall, Campus Avenue" rows="2"></textarea>
+              <div class="error-message" id="error-address" aria-live="polite"></div>
+            </div>
+
+          </div>
+
+          <!-- Form Buttons -->
+          <div class="form-actions">
+            <button type="submit" id="btn-generate" class="btn btn-primary" style="flex: 2;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Generate ID Card
+            </button>
+            <button type="button" id="btn-reset" class="btn btn-secondary" style="flex: 1;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              Reset
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: Live Card Preview & Customization -->
+      <section class="preview-panel" aria-labelledby="preview-heading">
+
+        <!-- Customization Toolbar -->
+        <div class="card-controls">
+          <div class="control-row">
+            <span class="control-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="m4.93 4.93 4.24 4.24" />
+                <path d="m14.83 9.17 4.24-4.24" />
+                <path d="m14.83 14.83 4.24 4.24" />
+                <path d="m9.17 14.83-4.24 4.24" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+              Color Theme
+            </span>
+            <div class="theme-selector" role="radiogroup" aria-label="Select card theme">
+              <button type="button" class="theme-pill active" data-theme="blue" title="Blue Classic" aria-label="Blue Classic theme"></button>
+              <button type="button" class="theme-pill" data-theme="emerald" title="Emerald Green" aria-label="Emerald Green theme"></button>
+              <button type="button" class="theme-pill" data-theme="sunset" title="Sunset Amber" aria-label="Sunset Amber theme"></button>
+              <button type="button" class="theme-pill" data-theme="dark" title="Dark Carbon" aria-label="Dark Carbon theme"></button>
+              <button type="button" class="theme-pill" data-theme="purple" title="Royal Purple" aria-label="Royal Purple theme"></button>
+            </div>
+            <div class="color-picker-wrap" title="Pick a custom accent color">
+              <label for="accent-color-picker">Accent:</label>
+              <input type="color" id="accent-color-picker" value="#38bdf8" aria-label="Custom accent color" />
+            </div>
+          </div>
+
+          <div class="control-row">
+            <span class="control-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="14" x="3" y="5" rx="2" />
+                <path d="M7 15h4M15 15h2M7 11h10" />
+              </svg>
+              Orientation
+            </span>
+            <div class="orientation-toggle" role="group" aria-label="Card layout orientation">
+              <button type="button" id="btn-orient-landscape" class="orientation-btn active">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/></svg>
+                Horizontal
+              </button>
+              <button type="button" id="btn-orient-portrait" class="orientation-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2"/></svg>
+                Vertical
+              </button>
+            </div>
+          </div>
+
+          <div class="control-row innovation-row">
+            <span class="control-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              Innovations
+            </span>
+            <div class="innovation-toggles">
+              <button type="button" id="btn-toggle-holo" class="innovation-btn active" title="Toggle interactive light-refracting holographic foil sheen">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/></svg>
+                <span>Hologram</span>
+              </button>
+              <button type="button" id="btn-toggle-uv" class="innovation-btn" title="Inspect under Ultraviolet (UV) Forensic Blacklight">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                <span>UV Security</span>
+              </button>
+              <button type="button" id="btn-toggle-lanyard" class="innovation-btn" title="Toggle realistic punched badge clip slot">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="7" r="2"/></svg>
+                <span>Lanyard Slot</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Stage: 3D Perspective Box -->
+        <div class="card-stage-container" id="card-stage-container">
+          <div class="card-status-badge">
+            <span class="status-dot"></span>
+            <span id="card-side-indicator">Front View</span>
+          </div>
+
+          <div class="card-scene orientation-landscape" id="card-scene">
+            <div class="id-card-inner" id="id-card-inner">
+
+              <!-- FRONT SIDE -->
+              <div class="card-face card-front" id="card-front-face">
+                <!-- Optional Lanyard Slot Cutout -->
+                <div class="card-lanyard-slot" aria-hidden="true"><div class="slot-hole"></div></div>
+
+                <!-- Holographic Sheen Dynamic Layer -->
+                <div class="card-holo-sheen" aria-hidden="true"></div>
+
+                <!-- UV Security Fluorescent Watermark -->
+                <div class="card-uv-watermark" aria-hidden="true">
+                  <div class="uv-seal">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="uv-seal-title">SECURE DIGITAL ID</span>
+                    <span class="uv-seal-sub">AUTHENTIC - 2026</span>
+                  </div>
+                </div>
+
+                <!-- Header with Institution & Crest -->
+                <div class="card-header-bar">
+                  <div class="inst-brand">
+                    <div class="inst-logo-crest" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                      </svg>
+                    </div>
+                    <div class="inst-text-block">
+                      <div class="inst-name-display" id="disp-institution">Apex Metropolitan University</div>
+                      <div class="inst-sub-display">Excellence in Education</div>
+                    </div>
+                  </div>
+                  <div class="card-badge-student">Student ID</div>
+                </div>
+
+                <!-- Main Front Body -->
+                <div class="card-front-body">
+                  <!-- Photo Container -->
+                  <div class="card-photo-box">
+                    <div class="card-photo-fallback" id="card-photo-fallback">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                    </div>
+                    <img id="disp-card-photo" alt="Student photo" style="display: none;" />
+                  </div>
+
+                  <!-- Details Column -->
+                  <div class="card-student-info">
+                    <div>
+                      <div class="student-name-display" id="disp-fullName">Alexander Vance</div>
+                      <div class="student-id-display">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect width="18" height="14" x="3" y="5" rx="2" />
+                          <circle cx="9" cy="12" r="2" />
+                          <path d="M15 10h2M15 14h2" />
+                        </svg>
+                        <span id="disp-studentId">CS-2026-894</span>
+                      </div>
+                    </div>
+
+                    <div class="student-meta-grid">
+                      <div class="meta-item">
+                        <span class="meta-label">Program:</span>
+                        <span class="meta-val" id="disp-course">B.Tech Computer Science</span>
+                      </div>
+                      <div class="meta-item">
+                        <span class="meta-label">Dept:</span>
+                        <span class="meta-val" id="disp-department">School of Computing</span>
+                      </div>
+                      <div class="meta-item">
+                        <span class="meta-label">Year/Sem:</span>
+                        <span class="meta-val" id="disp-yearSemester">Year 3 / Sem 6</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Bar -->
+                <div class="card-front-footer">
+                  <div class="footer-left-security">
+                    <!-- Realistic Smart Card EMV Chip -->
+                    <div class="card-smart-chip" aria-hidden="true" title="EMV Microchip">
+                      <div class="chip-circuit"></div>
+                    </div>
+                    <div class="hologram-chip">
+                      <div class="hologram-seal"></div>
+                      <span>OFFICIAL STUDENT CARD</span>
+                    </div>
+                  </div>
+                  <div id="disp-card-year">2026-2027</div>
+                </div>
+              </div>
+
+              <!-- BACK SIDE -->
+              <div class="card-face card-back" id="card-back-face">
+                <!-- Optional Lanyard Slot Cutout -->
+                <div class="card-lanyard-slot" aria-hidden="true"><div class="slot-hole"></div></div>
+
+                <!-- Holographic Sheen Dynamic Layer -->
+                <div class="card-holo-sheen" aria-hidden="true"></div>
+
+                <!-- UV Security Fluorescent Watermark -->
+                <div class="card-uv-watermark" aria-hidden="true">
+                  <div class="uv-seal">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="uv-seal-title">SECURE DIGITAL ID</span>
+                    <span class="uv-seal-sub">AUTHENTIC - 2026</span>
+                  </div>
+                </div>
+
+                <!-- Magnetic stripe simulation -->
+                <div class="card-back-magstripe"></div>
+
+                <!-- Back details and QR code -->
+                <div class="card-back-body">
+                  <!-- Personal Details -->
+                  <div class="card-back-fields">
+                    <div class="back-fields-grid">
+                      <div class="back-field-item">
+                        <span class="back-label">Date of Birth</span>
+                        <span class="back-value" id="disp-dob">Nov 15, 2003</span>
+                      </div>
+                      <div class="back-field-item">
+                        <span class="back-label">Blood Group</span>
+                        <span class="back-value blood-badge" id="disp-bloodGroup">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                          <span>O+</span>
+                        </span>
+                      </div>
+                      <div class="back-field-item">
+                        <span class="back-label">Phone</span>
+                        <span class="back-value" id="disp-phone">+1 (555) 234-5678</span>
+                      </div>
+                      <div class="back-field-item">
+                        <span class="back-label">Valid Until</span>
+                        <span class="back-value" id="disp-validUntil">Jun 30, 2028</span>
+                      </div>
+                      <div class="back-field-item address-item">
+                        <span class="back-label">Emergency Email</span>
+                        <span class="back-value" id="disp-email">a.vance@campus.apex.edu</span>
+                      </div>
+                      <div class="back-field-item address-item">
+                        <span class="back-label">Permanent Address</span>
+                        <span class="back-value" id="disp-address">Room 402, North Hall, University Campus</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- QR Code & Signature column -->
+                  <div class="card-back-side-col">
+                    <div class="qr-code-box" id="qr-code-container" title="Scan to verify student ID">
+                      <!-- Rendered by QRCode.js or Fallback -->
+                    </div>
+                    <div class="qr-caption" id="qr-id-caption">ID: CS-2026-894</div>
+                    <div class="signature-box">
+                      <div class="signature-line">Registrar Off.</div>
+                      <div class="signature-label">Authorized Sign</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Terms Notice -->
+                <div class="card-back-terms">
+                  Property of the Institution. If found, please return to Student Affairs or call Security.
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="preview-actions-bar">
+          <button type="button" id="btn-flip" class="btn btn-secondary" title="Flip card between Front and Back sides">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m16 3 4 4-4 4" />
+              <path d="M20 7H4a4 4 0 0 0-4 4v1" />
+              <path d="m8 21-4-4 4-4" />
+              <path d="M4 17h16a4 4 0 0 0 4-4v-1" />
+            </svg>
+            Flip Card
+          </button>
+
+          <button type="button" id="btn-download-png" class="btn btn-primary" title="Download card image as PNG">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Save PNG
+          </button>
+
+          <button type="button" id="btn-download-pdf" class="btn btn-secondary" title="Download high-resolution PDF">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            Save PDF
+          </button>
+
+          <button type="button" id="btn-print" class="btn btn-secondary" title="Print card using printer dialog">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect width="12" height="8" x="6" y="14" />
+            </svg>
+            Print Card
+          </button>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- App Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>© 2026 IDify — Professional Student Identity Systems. All data runs locally in your browser.</p>
+      <div class="footer-links">
+        <span>ISO/IEC 7810 ID-1 Standard Proportions</span>
+        <span>•</span>
+        <span>Pure Client-Side Vanilla JS</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Vanilla JavaScript Application Logic -->
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
